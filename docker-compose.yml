@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   postgres:
     image: postgres:latest
@@ -28,8 +30,8 @@ services:
       retries: 5
 
   nestjs-app:
-    build:
-      context: ../crud-task 
+    build: 
+      context: .
       dockerfile: Dockerfile
     container_name: nestjs_app
     ports:
@@ -48,10 +50,10 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
     volumes:
-      - ../crud-task:/app
-      - /app/node_modules
-    command: [ "sh", "-c", "sleep 5 && npm run start" ]
+      - nestjs_data:/app
+    command: [ "sh", "-c", "cd /app && npm run start" ]
 
 volumes:
   postgres_data:
   redis_data:
+  nestjs_data:
